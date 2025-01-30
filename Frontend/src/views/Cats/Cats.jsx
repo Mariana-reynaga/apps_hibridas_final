@@ -22,7 +22,7 @@ function Cats(){
 
     return(
         <>
-            <div className="">
+            <div className="mt-10">
                 <h1>Pagina de gatos</h1>
             </div>
 

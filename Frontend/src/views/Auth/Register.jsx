@@ -1,11 +1,12 @@
 import React from 'react';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function Register(){
-    const [name, setname] = useState('');
+    const navigate = useNavigate();
 
+    const [name, setname] = useState('');
     const [email, setemail] = useState('');
-    
     const [password, setpassword] = useState('');
 
     const [registerStatus, setregisterStatus] = useState('');
@@ -40,6 +41,8 @@ function Register(){
             return
         }
 
+        navigate(`/login`, { replace: true });
+        location.reload();
     }
 
     return(

@@ -1,8 +1,11 @@
 import React from 'react';
 
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function Login(){
+    const navigate = useNavigate();
+
     const [email, setemail] = useState('');
 
     const [password, setpassword] = useState('');
@@ -29,7 +32,6 @@ function Login(){
         }
 
         const res = await fetch(endpoint, config);
-
         
         const data = await res.json();
         
@@ -40,7 +42,8 @@ function Login(){
             return
         }
         
-        // redirigir al home
+        navigate(`/`, { replace: true });
+        location.reload();
     }
 
     return(

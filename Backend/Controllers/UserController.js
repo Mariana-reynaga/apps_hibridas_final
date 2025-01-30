@@ -191,7 +191,7 @@ const deleteUser = async ( req, res ) =>{
 };
 
 // Iniciar sesión
-const login = async (req, res)=>{
+const login = async (req, res ) =>{
     try {
         const { email, password } = req.body;
 
@@ -231,7 +231,19 @@ const login = async (req, res)=>{
     }
 }
 
-const loginCheck = async( req, res) =>{
+// Cerrar sesión
+const logout = async ( req , res ) =>{
+    try {
+        res.clearCookie("access_token", {httpOnly: true, sameSite: 'none', secure: true});
+        res.status(200).json({msg: 'sesión cerrada'});
+
+    } catch (error) {
+        log(chalk.bgRed('[UserController.js]: logout: ' ,error));
+        res.status(500).json({msg: 'OOPS, tenemos un error', data: {}});
+    }
+}
+
+const loginCheck = async ( req, res ) =>{
     try {
         res.status(200).json({msg: 'el usuario si esta verificado' });
 
@@ -241,4 +253,26 @@ const loginCheck = async( req, res) =>{
     }
 }
 
-module.exports = { bringUsers, getUserXname, getUserXid, createUser, updateUser, deleteUser, login, createAdmin, loginCheck };
+const checkIfAdmin = async ( req, res ) =>{
+    try {
+        res.status(200).json({msg: 'el usuario si esta verificado y es admin' });
+
+    } catch (error) {
+        log(chalk.bgRed('[UserController.js]: adminCheck: ' ,error));
+        res.status(500).json({msg: 'OOPS, tenemos un error', data: {}});
+    }
+}
+
+module.exports = { 
+    bringUsers, 
+    getUserXname, 
+    getUserXid, 
+    createUser, 
+    updateUser, 
+    deleteUser, 
+    login,
+    logout,
+    createAdmin, 
+    loginCheck,
+    checkIfAdmin
+};
