@@ -4,8 +4,12 @@ const log = console.log;
 
 const mongoose = require('mongoose');
 
+const isImageURL = require('image-url-validator').default;
+
 const Cats = require('../Models/CatsModel');
 const Colors = require('../Models/ColorsModel');
+const Length = require('../Models/LengthModel');
+const Status = require('../Models/StatusModel');
 
 // Traer todas las razas experimentales
 const getBreeds = async ( req, res ) => {
@@ -116,52 +120,47 @@ const createCat = async ( req, res ) =>{
         res.status(400).json({msg: 'Faltan datos obligatorios.', data: { name, origin, coat_length, status, color }});
     };
 
-    if( !mongoose.isValidObjectId(color) ){
-        res.status(400).json({msg: 'El color tiene que ser un ObjectID.', data: { color }});
+    if( !mongoose.isValidObjectId(color) && !mongoose.isValidObjectId(status) && !mongoose.isValidObjectId(coat_length) ){
+        res.status(400).json({msg: 'El color, status y largo de pelo tiene que ser un ObjectID.', data: { color, status, coat_length }});
+        
     }else{
-
-        const possible_lengths = Cats.schema.path('coat_length').enumValues;
-
-        const possible_status = Cats.schema.path('status').enumValues;
-
         try {
-            const colorGato = await Colors.findById(color)
+            const colorGato     = await Colors.findById(color)
+            const lengthGato    = await Length.findById(coat_length)
+            const statusGato    = await Status.findById(status)
 
-            if (colorGato) {
-                if ( name.length >= 4 && possible_status.includes(status) && possible_lengths.includes(coat_length) ) {
+            if (colorGato && lengthGato && statusGato) {
 
-                    const breedExist = await Cats.exists({ name });
-        
-                    if (breedExist){
-                        return res.status(400).send({ msg: "La raza ya existe." });
-                    }
-                    
-                    const newBreed = new Cats( { name, origin, coat_length, status, color: colorGato._id } );
-                    
-                    await newBreed.save();
-        
-                    res.status(200).json( { msg: "Raza Creada.", data: newBreed } );
-        
-                } else {
-                    res.status(400).json({
-                        msg: 'Datos incorrectos.', 
-                        correctData:{
-                            nombre: "El nombre debe ser al menos 4 caracteres.",
-                            largo: "Los largos validos son: 'short', 'long', 'bald'.",
-                            status: "El status puede ser: 'recognized' o 'experimental' "
-                        }, 
-                        data: { 
-                            name, 
-                            origin, 
-                            coat_length, 
-                            status, 
-                            colorGato
-                        } 
-                    });
+                const breedExist = await Cats.exists({ name });
+                
+                if (breedExist){
+                    return res.status(400).send({ msg: "La raza ya existe." });
+                }
+                
+                if(name.length < 4){
+                    return res.status(400).send({msg: "El nombre no puede tener menos de 4 caracteres."});
                 }
 
+                if(origin.length < 4){
+                    return res.status(400).send({msg: "El lugar de origen no puede tener menos de 4 caracteres."});
+                }
+
+                const newBreed = new Cats( { 
+                    name, 
+                    origin, 
+                    coat_length: lengthGato._id, 
+                    status: statusGato._id, 
+                    color: colorGato._id
+                } );
+                
+                await newBreed.save();
+    
+                res.status(200).json( { msg: "Raza Creada.", data: newBreed } );
+
             } else {
-                res.status(404).json({msg: "El color no existe.", data: {}});
+                res.status(400).json({
+                    msg: 'Algo ocurrio con color, largo o estado.'
+                });
             }
 
         } catch (error) {
@@ -176,59 +175,89 @@ const createCat = async ( req, res ) =>{
 const editCat = async ( req, res ) =>{
     const { id } = req.params;
 
-    const { name, origin, coat_length, status, color } = req.body;
+    const { name, origin, coat_length, status, color, img_url } = req.body;
 
-    const colorQuery = Colors.where({name: color});
-    const colorName = await colorQuery.findOne();
+    if ( !name || !origin || !coat_length || !status || !color ) {
+        res.status(400).json({msg: 'Faltan datos obligatorios.', data: { 
+            name, 
+            origin, 
+            coat_length, 
+            status, 
+            color
+        }});
+    };
 
-    const newData = { name, origin, coat_length, status, color:colorName.name };
+    if( 
+        !mongoose.isValidObjectId(color) && 
+        !mongoose.isValidObjectId(status) && 
+        !mongoose.isValidObjectId(coat_length) 
+    ){
+        res.status(400).json({
+            msg: 'El color, status y largo de pelo tiene que ser un ObjectID.', 
+            data: { color, status, coat_length }});
+
+    }else{
+        const colorGato     = await Colors.findById(color);
+        const lengthGato    = await Length.findById(coat_length)
+        const statusGato    = await Status.findById(status)
+
+        let imgCheck = await isImageURL(img_url);
+
+        let newData = { 
+            name, 
+            origin, 
+            coat_length: lengthGato._id, 
+            status: statusGato._id, 
+            color: colorGato._id,
+            img_url
+        };
+
+        if(!imgCheck || img_url.length == 0){
+            newData = { 
+                name, 
+                origin, 
+                coat_length: lengthGato._id, 
+                status: statusGato._id, 
+                color: colorGato._id,
+                img_url: "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg"
+            };
+
+            log('el url no era valido, asi que lo remplazamos!');
+        }
+
+        try {
+            const breed = await Cats.findById(id);
     
-    const possible_lengths = Cats.schema.path('coat_length').enumValues;
+            if (breed) {
+                if(colorGato && lengthGato && statusGato){
 
-    const possible_status = Cats.schema.path('status').enumValues;
-    
-    try {
-        const breed = await Cats.findById(id);
+                    if(name.length < 4){
+                        return res.status(400).send({msg: "El nombre no puede tener menos de 4 caracteres."});
+                    }
 
-        if(!name || !origin || !coat_length || !status ){
-            res.status(400).json({msg: 'Faltan datos obligatorios.', data:{newData}});
-        }else
+                    if(origin.length < 4){
+                        return res.status(400).send({msg: "El lugar de origen no puede tener menos de 4 caracteres."});
+                    }
 
-        if (breed) {
-            if(colorName){
-                if ( name.length >= 4 && possible_status.includes(status) && possible_lengths.includes(coat_length) ) {
                     const newBreed = await Cats.findByIdAndUpdate(id, newData, {new: true});
-        
-                    res.status(200).json({msg: "La raza fue actualizada exitosamente.", data: newBreed});
-    
-                }else {
+            
+                    res.status(200).json({
+                    msg: "La raza fue actualizada exitosamente.", data: newBreed});
+
+                }else{
                     res.status(400).json({
-                        msg: 'Datos incorrectos.', 
-                        correctData:{
-                            nombre: "El nombre debe ser al menos 4 caracteres.",
-                            largo: "Los largos validos son: 'short', 'long', 'bald'.",
-                            status: "El status puede ser: 'recognized' o 'experimental'."
-                        }, 
-                        data: 
-                        { 
-                            name, 
-                            origin, 
-                            coat_length, 
-                            status, 
-                            color
-                        }
+                        msg: 'Algo ocurrio con color, largo o estado.'
                     });
                 }
-            }else{
-                
-            }
 
-        }else{
-            res.status(404).json({msg: "No se encontro la raza", data: {}});
+            }else{
+                res.status(404).json({msg: "No se encontro la raza", data: {}});
+            }
+        } catch (error) {
+            log(chalk.bgRed('[CatsController.js]: editCat: ' ,error));
+            res.status(500).json({msg: 'OOPS, tenemos un error', data: {}});
         }
-    } catch (error) {
-        log(chalk.bgRed('[CatsController.js]: editCat: ' ,error));
-        res.status(500).json({msg: 'OOPS, tenemos un error', data: {}});
+        
     }
 }
 

@@ -29,7 +29,13 @@ app.use( express.static('public') );
 
 // Conexión con usos externos
 const cors = require('cors');
-app.use( cors())
+app.use( cors({
+    credentials: true,
+    origin: 'http://localhost:5173'
+}))
+
+    // descomentar esto si es para testear en serividor
+// app.use( cors())
 
 // Ruta raiz
 app.get('/apiFinal', (req, res)=>{ 

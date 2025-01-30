@@ -99,7 +99,7 @@ const createUser = async ( req, res ) =>{
                 res.status(200).json( { msg: "Usuario Creado", data: newUser } );
 
             } else {
-                res.status(400).json({msg: 'Datos incorrectos. La contraseña debe ser al menos 8 caracteres y el email debe contener un @.', data: { email, password }});
+                res.status(400).json({msg: 'La contraseña debe ser al menos 8 caracteres.', data: { email, password }});
             }
             
         } catch (error) {
@@ -190,6 +190,7 @@ const deleteUser = async ( req, res ) =>{
     }
 };
 
+// Iniciar sesión
 const login = async (req, res)=>{
     try {
         const { email, password } = req.body;
@@ -207,17 +208,21 @@ const login = async (req, res)=>{
                 };
     
                 const token = jwt.sign(data, secretKey, {expiresIn: '24h'});
+                // const token = jwt.sign(data, secretKey, {expiresIn: '10s'});
                 
-                res.cookie('access_token', token, { maxAge: 8.64e+7, httpOnly: true });
+                res.cookie('access_token', token, { maxAge: 8.64e+7, httpOnly: true, sameSite: 'none', secure: true});
+                
+                    // descomentar esto si queres probar en servidor
+                // res.cookie('access_token', token, { maxAge: 8.64e+7, httpOnly: true });
 
                 res.status(200).json({msg: `Bienvenido ${user.name}`, data:{ data, token } });
                 
             }else{
-                res.status(401).json({msg: "El password es incorrecto", data: {}});
+                res.status(401).json({msg: "La constraseña es incorrecta", data: {}});
             }
             
         }else{
-            res.status(401).json({msg: "El email no existe", data: {}});
+            res.status(401).json({msg: "El email es incorrecto", data: {}});
         }
 
     } catch (error) {
@@ -226,4 +231,14 @@ const login = async (req, res)=>{
     }
 }
 
-module.exports = { bringUsers, getUserXname, getUserXid, createUser, updateUser, deleteUser, login, createAdmin };
+const loginCheck = async( req, res) =>{
+    try {
+        res.status(200).json({msg: 'el usuario si esta verificado' });
+
+    } catch (error) {
+        log(chalk.bgRed('[UserController.js]: loginCheck: ' ,error));
+        res.status(500).json({msg: 'OOPS, tenemos un error', data: {}});
+    }
+}
+
+module.exports = { bringUsers, getUserXname, getUserXid, createUser, updateUser, deleteUser, login, createAdmin, loginCheck };

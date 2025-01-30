@@ -7,7 +7,7 @@ const validateToken = require('../middleware/auth');
 const adminCheck = require('../middleware/adminCheck');
 const userCheck = require('../middleware/userCheck');
 
-const { bringUsers, getUserXname, getUserXid, createUser, updateUser, deleteUser, login, createAdmin } = require('../Controllers/UserController');
+const { bringUsers, getUserXname, getUserXid, createUser, updateUser, deleteUser, login, createAdmin, loginCheck } = require('../Controllers/UserController');
 
 // Rutas
 router.get('/', bringUsers);
@@ -25,5 +25,7 @@ router.delete('/:id',validateToken, deleteUser);
 router.post('/login', login); 
 
 router.put('/admin/:id',validateToken, adminCheck, createAdmin);
+
+router.get('/check/loginCheck', validateToken ,loginCheck);
 
 module.exports = router;

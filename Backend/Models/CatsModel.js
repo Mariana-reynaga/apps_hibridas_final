@@ -11,17 +11,9 @@ const catsSchema = new schema({
         required: true
     },
     color: { type: mongoose.Schema.Types.ObjectId, ref: 'Colors' },
-    coat_length:{
-        type: String,
-        enum: ['short', 'long', 'bald'],
-        default: 'short',
-        required: true
-    },
-    status:{
-        type: String,
-        enum: ['recognized', 'experimental'],
-        required: true
-    },
+    coat_length: { type: mongoose.Schema.Types.ObjectId, ref: 'Length'},
+    status:{ type: mongoose.Schema.Types.ObjectId, ref: 'Status'},
+    
     img_url:{
         type: String,
         default: "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg"

@@ -51,4 +51,22 @@ const createColor = async( req, res )=>{
     }
 }
 
-module.exports = { getColors, createColor };
+const deleteColor = async( req, res )=>{
+    const { id } = req.params;
+
+    try {
+        const color = await Colors.findByIdAndDelete(id);
+
+        if (color) {
+            res.status(200).json({msg: "El color fue eliminado exitosamente.", data: color});
+
+        }else{
+            res.status(404).json({msg: "No se encontro el color.", data: {}});
+        }
+    } catch (error) {
+        log(chalk.bgRed('[ColorController.js]: deleteColor: ' ,error));
+        res.status(500).json({msg: 'OOPS, tenemos un error', data: {}});
+    }
+}
+
+module.exports = { getColors, createColor, deleteColor };
