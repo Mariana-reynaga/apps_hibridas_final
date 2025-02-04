@@ -324,7 +324,7 @@ const deleteCat = async (req, res) =>{
 
     try {
         const breed = await Cats.findByIdAndDelete(id);
-
+        
         if (breed) {
             res.status(200).json({msg: "La raza fue eliminada exitosamente.", data: breed});
 

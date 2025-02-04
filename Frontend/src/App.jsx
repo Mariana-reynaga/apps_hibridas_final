@@ -3,16 +3,17 @@ import { useState } from 'react';
 import './App.css'
 
 // Rutas
-import Home       from "./views/Home";
-import Cats       from "./views/Cats/Cats";
-import AddCat     from "./views/Cats/AddCat";
-import CatDetail  from "./views/Cats/Details";
-import EditCat    from "./views/Cats/EditCat";
-import Login      from "./views/Auth/Login";
-import Logout     from "./views/Auth/Logout";
-import Register   from "./views/Auth/Register";
-import Admin      from "./views/Admin";
-import NotFound   from "./views/NotFound";
+import Home         from "./views/Home";
+import Cats         from "./views/Cats/Cats";
+import AddCat       from "./views/Cats/AddCat";
+import CatDetail    from "./views/Cats/Details";
+import EditCat      from "./views/Cats/EditCat";
+import DeleteCat  from './views/Cats/DeleteCat';
+import Login        from "./views/Auth/Login";
+import Logout       from "./views/Auth/Logout";
+import Register     from "./views/Auth/Register";
+import Admin        from "./views/Admin";
+import NotFound     from "./views/NotFound";
 
 // To protect routes
 import LoginCheck from './components/utility/LoginCheck';
@@ -112,25 +113,26 @@ function App() {
 
       {/* Rutas */}
       <Routes>
-        <Route    path="/"                element={ <Home /> }/>
-        <Route    path="/cats"            element={ <Cats /> }/>
-        <Route    path="/cats/:id"        element={ <CatDetail /> }/>
+        <Route    path="/"                  element={ <Home /> }/>
+        <Route    path="/cats"              element={ <Cats /> }/>
+        <Route    path="/cats/:id"          element={ <CatDetail /> }/>
 
-        <Route                            element={ <AdminCheck check={checkAdmin} /> }>
+        <Route                              element={ <AdminCheck check={checkAdmin} /> }>
 
-          <Route  path="/cats/add"        element={ <AddCat /> }/>
-          <Route  path="/cats/edit/:id"   element={ <EditCat /> }/>
-          <Route  path="/admin"           element={ <Admin /> }/>
+          <Route  path="/cats/add"          element={ <AddCat /> }/>
+          <Route  path="/cats/edit/:id"     element={ <EditCat /> }/>
+          <Route  path="/cats/delete/:id"   element={ <DeleteCat /> }/>
+          <Route  path="/admin"             element={ <Admin /> }/>
 
         </Route>
 
-        <Route                            element={ <LoginCheck check={checkUser} /> }>
-          <Route  path="/login"           element={ <Login /> }/>
-          <Route  path="/register"        element={ <Register />}/>
+        <Route                              element={ <LoginCheck check={checkUser} /> }>
+          <Route  path="/login"             element={ <Login /> }/>
+          <Route  path="/register"          element={ <Register />}/>
         </Route>
         
-        <Route    path="/logout"          element={ <Logout/> }/>
-        <Route    path="*"                element={ <NotFound /> }/>
+        <Route    path="/logout"            element={ <Logout/> }/>
+        <Route    path="*"                  element={ <NotFound /> }/>
       </Routes>
       
     </>

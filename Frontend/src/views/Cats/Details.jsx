@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { useParams } from "react-router-dom";
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 
 function Details(){
     const { id } = useParams();
@@ -60,7 +59,10 @@ function Details(){
                     <div className="my-3">
                     {
                         checkAdmin == true ? (
-                            <p><Link to={`/cats/edit/${id}`} >Editar Gato</Link></p>
+                            <>
+                                <p><Link to={`/cats/edit/${id}`} >Editar Gato</Link></p>
+                                <p><Link to={`/cats/delete/${id}`} >Eliminar Gato</Link></p>
+                            </>
                         ) : (
                             <></>
                         )
