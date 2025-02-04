@@ -2,11 +2,14 @@ import React from 'react';
 
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom'
 
 function Details(){
     const { id } = useParams();
 
-    const [detalle, setDetalle] = useState([]);
+    const [ detalle, setDetalle ] = useState([]);
+
+    const [checkAdmin, setcheckAdmin] = useState(false);
 
     useEffect( ()=>{
         const getGato = async() =>{
@@ -15,18 +18,63 @@ function Details(){
             const res = await fetch(endpoint);
 
             const detalle = await res.json();
-            
-            setDetalle(detalle.data);
+
+            setDetalle(detalle.data)
         }
         getGato();
     }, []);
 
+    const adminCheck = async()=>{
+        const endpoint = import.meta.env.VITE_ADMIN_CHECK;
+  
+        const config = {
+          method: 'GET',
+          headers:{
+              'Content-type': 'application/json'
+          },
+          credentials: 'include'
+      }
+  
+        const res = await fetch(endpoint, config);
+  
+        const adminCheck = await res.json();
+  
+        // console.log(adminCheck);
+  
+        if(res.ok){
+          setcheckAdmin(true);
+          // console.log("el user es admin = ", checkAdmin);
+  
+        }else{
+          setcheckAdmin(false);
+          // console.log("el user no es admin = ", checkAdmin);
+        }
+    }
+
+    adminCheck();
+
     return(
         <>
-            <div className="">
-                <h1>Pagina de detalles de "{ detalle.name }"</h1>
+            <div className="flex justify-center">
+                <div className="w-4/5">
+                    <div className="my-3">
+                    {
+                        checkAdmin == true ? (
+                            <p><Link to={`/cats/edit/${id}`} >Editar Gato</Link></p>
+                        ) : (
+                            <></>
+                        )
+                    }
+                    </div>
 
-                <p>{ detalle.name } es una raza {detalle.status}</p>
+                    <h1>Pagina de detalles de "{ detalle.name }"</h1>
+
+                    <p>{ detalle.name } es una raza {detalle.status}</p>
+                    
+                    <div className="w-1/5">
+                        <img src={detalle.img_url} alt="" />
+                    </div>
+                </div>
             </div>
         </>
     )

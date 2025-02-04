@@ -3,6 +3,7 @@ const chalk = require('chalk');
 const log = console.log;
 
 const Colors = require('../Models/ColorsModel');
+const { find } = require('../Models/CatsModel');
 
 const getColors = async( req, res )=>{
     const colors = await Colors.find();

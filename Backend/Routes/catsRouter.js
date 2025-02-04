@@ -7,19 +7,22 @@ const adminCheck = require('../middleware/adminCheck');
 
 const { 
     getBreeds, 
-    getBreedXid, 
+    getBreedXid,
+    getBreedXidEdit,
     getBreedXname, 
     getBreedXlength,  
     createCat,
     editCat,
     deleteCat,
-    threeRandomBreed 
+    threeRandomBreed,
 } = require('../Controllers/CatsController');
 
 // Rutas
 router.get('/', getBreeds);
 
 router.get('/find/:id', getBreedXid);
+
+router.get('/findXedit/:id', getBreedXidEdit);
 
 router.get('/name/:name', getBreedXname);
 

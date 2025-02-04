@@ -87,6 +87,38 @@ const getBreedXid = async ( req, res ) => {
     try {
         const breed = await Cats.findById(id);
 
+        const breedColor = await Colors.findById(breed.color);
+        const breedStatus = await Status.findById(breed.status);
+        const breedLength = await Length.findById(breed.coat_length);
+
+        const beedData = {
+            name: breed.name,
+            origin: breed.origin,
+            color: breedColor.name,
+            coat_length: breedLength.name,
+            status: breedStatus.name,
+            img_url: breed.img_url
+        };
+
+        if (breed) {
+            res.status(200).json({msg: "¡Raza encontrada!", data: beedData});
+
+        }else{
+            res.status(404).json({msg: "No se encontro la raza.", data: {}});
+        }
+    } catch (error) {
+        log(chalk.bgRed('[CatsController.js]: getBreedXid: ' ,error));
+        res.status(500).json({msg: 'OOPS, tenemos un error', data: {}});
+    }
+};
+
+// Traer una raza por ID para editarla
+const getBreedXidEdit = async ( req, res ) => {
+    const {id} = req.params; 
+
+    try {
+        const breed = await Cats.findById(id);
+
         if (breed) {
             res.status(200).json({msg: "¡Raza encontrada!", data: breed});
 
@@ -94,7 +126,7 @@ const getBreedXid = async ( req, res ) => {
             res.status(404).json({msg: "No se encontro la raza.", data: {}});
         }
     } catch (error) {
-        log(chalk.bgRed('[CatsController.js]: getBreedXid: ' ,error));
+        log(chalk.bgRed('[CatsController.js]: getBreedXidEdit: ' ,error));
         res.status(500).json({msg: 'OOPS, tenemos un error', data: {}});
     }
 };
@@ -114,7 +146,7 @@ const threeRandomBreed = async (req, res) => {
 
 // Añadir una nueva raza
 const createCat = async ( req, res ) =>{
-    const { name, origin, coat_length, status, color } = req.body;
+    const { name, origin, coat_length, status, color, img_url } = req.body;
 
     if ( !name || !origin || !coat_length || !status || !color ) {
         res.status(400).json({msg: 'Faltan datos obligatorios.', data: { name, origin, coat_length, status, color }});
@@ -145,14 +177,39 @@ const createCat = async ( req, res ) =>{
                     return res.status(400).send({msg: "El lugar de origen no puede tener menos de 4 caracteres."});
                 }
 
-                const newBreed = new Cats( { 
+                let imgCheck = await isImageURL(img_url);
+
+                let newBreed = new Cats( { 
                     name, 
                     origin, 
                     coat_length: lengthGato._id, 
                     status: statusGato._id, 
-                    color: colorGato._id
+                    color: colorGato._id,
+                    img_url
                 } );
-                
+
+                if(!imgCheck || img_url.length == 0){
+                    newBreed = new Cats( { 
+                        name, 
+                        origin, 
+                        coat_length: lengthGato._id, 
+                        status: statusGato._id, 
+                        color: colorGato._id,
+                        img_url: "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg"
+                    });
+        
+                    log('el url no era valido, asi que lo remplazamos!');
+                }else{
+                    newBreed = new Cats( { 
+                        name, 
+                        origin, 
+                        coat_length: lengthGato._id, 
+                        status: statusGato._id, 
+                        color: colorGato._id,
+                        img_url
+                    } );
+                }
+
                 await newBreed.save();
     
                 res.status(200).json( { msg: "Raza Creada.", data: newBreed } );
@@ -282,7 +339,8 @@ const deleteCat = async (req, res) =>{
 
 module.exports = { 
     getBreeds, 
-    getBreedXid, 
+    getBreedXid,
+    getBreedXidEdit,
     getBreedXname, 
     getBreedXlength,  
     createCat,

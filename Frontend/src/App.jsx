@@ -3,16 +3,18 @@ import { useState } from 'react';
 import './App.css'
 
 // Rutas
-import Home from "./views/Home";
-import Cats from "./views/Cats/Cats";
-import AddCat from "./views/Cats/AddCat";
-import CatDetail from "./views/Cats/Details";
-import Login from "./views/Auth/Login";
-import Logout from "./views/Auth/Logout";
-import Register from "./views/Auth/Register";
-import Admin from "./views/Admin";
-import NotFound from "./views/NotFound";
+import Home       from "./views/Home";
+import Cats       from "./views/Cats/Cats";
+import AddCat     from "./views/Cats/AddCat";
+import CatDetail  from "./views/Cats/Details";
+import EditCat    from "./views/Cats/EditCat";
+import Login      from "./views/Auth/Login";
+import Logout     from "./views/Auth/Logout";
+import Register   from "./views/Auth/Register";
+import Admin      from "./views/Admin";
+import NotFound   from "./views/NotFound";
 
+// To protect routes
 import LoginCheck from './components/utility/LoginCheck';
 import AdminCheck from './components/utility/AdminCheck';
 
@@ -37,11 +39,11 @@ function App() {
 
       if(res.ok){
         setcheckUser(true);
-        console.log("el user esta verificado = ", checkUser);
+        // console.log("el user esta verificado = ", checkUser);
 
       }else{
         setcheckUser(false);
-        console.log("el user no esta verificado = ", checkUser);
+        // console.log("el user no esta verificado = ", checkUser);
       }
     }
 
@@ -60,15 +62,15 @@ function App() {
 
       const adminCheck = await res.json();
 
-      console.log(adminCheck);
+      // console.log(adminCheck);
 
       if(res.ok){
         setcheckAdmin(true);
-        console.log("el user es admin = ", checkAdmin);
+        // console.log("el user es admin = ", checkAdmin);
 
       }else{
         setcheckAdmin(false);
-        console.log("el user no es admin = ", checkAdmin);
+        // console.log("el user no es admin = ", checkAdmin);
       }
     }
 
@@ -77,55 +79,58 @@ function App() {
 
   return (
     <>
-      <div className="">
-        <ul>
-          <li><NavLink to="/">Home</NavLink></li>
-          <li><NavLink to="/cats">Gatos</NavLink></li>
+      <div className="py-5 mb-5 flex justify-center bg-green-600">
+        <div className="w-4/5">
+          <ul className='flex justify-between'>
+            <li><NavLink to="/">Home</NavLink></li>
+            <li><NavLink to="/cats">Gatos</NavLink></li>
 
-          {
-            checkAdmin == true ? (
-              <li><NavLink to="/cats/add">Agregar Gato</NavLink></li>
-            ) : (
-              <></>
-            )
-          }
+            {
+              checkAdmin == true ? (
+                <li><NavLink to="/cats/add">Agregar Gato</NavLink></li>
+              ) : (
+                <></>
+              )
+            }
 
-          {
-            checkUser == true ? (
-              <>
-                <li><NavLink to="">Perfil</NavLink></li>
-                <li><NavLink to="/logout">Logout</NavLink></li>
-              </>
-            ) : (
-              <>
-                <li><NavLink to="/login">Login</NavLink></li>
-                <li><NavLink to="/register">Registro</NavLink></li>
-              </>
-            )
-          }
-        </ul>
+            {
+              checkUser == true ? (
+                <>
+                  <li><NavLink to="">Perfil</NavLink></li>
+                  <li><NavLink to="/logout">Logout</NavLink></li>
+                </>
+              ) : (
+                <>
+                  <li><NavLink to="/login">Login</NavLink></li>
+                  <li><NavLink to="/register">Registro</NavLink></li>
+                </>
+              )
+            }
+          </ul>
+        </div>
       </div>
 
       {/* Rutas */}
       <Routes>
-        <Route    path="/"          element={ <Home /> }/>
-        <Route    path="/cats"      element={ <Cats /> }/>
-        <Route    path="/cats/:id"  element={ <CatDetail /> }/>
+        <Route    path="/"                element={ <Home /> }/>
+        <Route    path="/cats"            element={ <Cats /> }/>
+        <Route    path="/cats/:id"        element={ <CatDetail /> }/>
 
-        <Route                      element={ <AdminCheck check={checkAdmin} /> }>
+        <Route                            element={ <AdminCheck check={checkAdmin} /> }>
 
-          <Route  path="/cats/add"  element={ <AddCat /> }/>
-          <Route  path="/admin"     element={ <Admin /> }/>
+          <Route  path="/cats/add"        element={ <AddCat /> }/>
+          <Route  path="/cats/edit/:id"   element={ <EditCat /> }/>
+          <Route  path="/admin"           element={ <Admin /> }/>
 
         </Route>
 
-        <Route                      element={ <LoginCheck check={checkUser} /> }>
-          <Route  path="/login"     element={ <Login /> }/>
-          <Route  path="/register"  element={ <Register />}/>
+        <Route                            element={ <LoginCheck check={checkUser} /> }>
+          <Route  path="/login"           element={ <Login /> }/>
+          <Route  path="/register"        element={ <Register />}/>
         </Route>
         
-        <Route    path="/logout"    element={ <Logout/> }/>
-        <Route    path="*"          element={ <NotFound /> }/>
+        <Route    path="/logout"          element={ <Logout/> }/>
+        <Route    path="*"                element={ <NotFound /> }/>
       </Routes>
       
     </>
