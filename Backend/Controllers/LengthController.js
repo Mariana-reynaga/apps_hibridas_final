@@ -2,6 +2,7 @@
 const chalk = require('chalk');
 const log = console.log;
 
+const Cats = require('../Models/CatsModel');
 const Length = require('../Models/LengthModel');
 
 const getLength = async( req, res )=>{
@@ -19,16 +20,34 @@ const getLength = async( req, res )=>{
     }
 }
 
+const getLengthXid = async( req, res )=>{
+    const {id} = req.params;
+
+    try {
+        const length = await Length.findById(id);
+
+        if (length) {
+            res.status(200).json({msg: "¡Largo encontrado!", data: length});
+
+        }else{
+            res.status(404).json({msg: "No se encontro el largo.", data: {}});
+        }
+    } catch (error) {
+        log(chalk.bgRed('[lengthController.js]: getLengthXid: ' ,error));
+        res.status(500).json({msg: 'OOPS, tenemos un error', data: {}});
+    }
+}
+
 const createLength = async( req, res )=>{
     const { name } = req.body;
 
     if ( !name ) {
-        res.status(400).json({msg: 'Faltan datos obligatorios', data: { name }});
+        return res.status(400).json({msg: 'Faltan datos obligatorios', data: { name }});
     };
     
     try {
-        if( name < 4){
-            res.status(400).json({msg: 'El largo debe tener un minimo de 4 letras.', data: { name }});
+        if( name.length < 4){
+            return res.status(400).json({msg: 'El largo debe tener un minimo de 4 letras.', data: { name }});
         }
 
         const lengthCheck = await Length.exists( { name } );
@@ -53,6 +72,8 @@ const deleteLength = async( req, res )=>{
     const { id } = req.params;
 
     try {
+        const graveyard = await Cats.deleteMany({coat_length: id});
+
         const length = await Length.findByIdAndDelete(id);
 
         if (length) {
@@ -67,4 +88,4 @@ const deleteLength = async( req, res )=>{
     }
 }
 
-module.exports = { getLength, createLength, deleteLength };
+module.exports = { getLength, getLengthXid, createLength, deleteLength };

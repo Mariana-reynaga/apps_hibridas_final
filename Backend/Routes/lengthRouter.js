@@ -5,9 +5,11 @@ router.use(express.json());
 const validateToken = require('../middleware/auth');
 const adminCheck = require('../middleware/adminCheck');
 
-const { getLength, createLength, deleteLength } = require('../Controllers/LengthController');
+const { getLength, createLength, getLengthXid, deleteLength } = require('../Controllers/LengthController');
 
 router.get('/', getLength);
+
+router.get('/find/:id', getLengthXid);
 
 router.post('/', validateToken, adminCheck, createLength);
 

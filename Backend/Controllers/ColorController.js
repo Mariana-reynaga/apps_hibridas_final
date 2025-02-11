@@ -2,8 +2,8 @@
 const chalk = require('chalk');
 const log = console.log;
 
+const Cats = require('../Models/CatsModel');
 const Colors = require('../Models/ColorsModel');
-const { find } = require('../Models/CatsModel');
 
 const getColors = async( req, res )=>{
     const colors = await Colors.find();
@@ -22,16 +22,34 @@ const getColors = async( req, res )=>{
     }
 }
 
+const getColorXid = async( req, res )=>{
+    const {id} = req.params;
+
+    try {
+        const color = await Colors.findById(id);
+
+        if (color) {
+            res.status(200).json({msg: "¡Color encontrado!", data: color});
+
+        }else{
+            res.status(404).json({msg: "No se encontro el color.", data: {}});
+        }
+    } catch (error) {
+        log(chalk.bgRed('[colorController.js]: getColorXid: ' ,error));
+        res.status(500).json({msg: 'OOPS, tenemos un error', data: {}});
+    }
+}
+
 const createColor = async( req, res )=>{
     const { name } = req.body;
 
     if ( !name ) {
-        res.status(400).json({msg: 'Faltan datos obligatorios', data: { name }});
+        return res.status(400).json({msg: 'Faltan datos obligatorios', data: { name }});
     };
-    
+
     try {
-        if( name < 4){
-            res.status(400).json({msg: 'El color debe tener un minimo de 4 letras.', data: { name }});
+        if( name.length < 4){
+            return res.status(400).json({msg: 'El color debe tener un minimo de 4 letras.', data: { name }});
         }
 
         const colorCheck = await Colors.exists( { name } );
@@ -56,6 +74,8 @@ const deleteColor = async( req, res )=>{
     const { id } = req.params;
 
     try {
+        const graveyard = await Cats.deleteMany({color: id})
+
         const color = await Colors.findByIdAndDelete(id);
 
         if (color) {
@@ -70,4 +90,4 @@ const deleteColor = async( req, res )=>{
     }
 }
 
-module.exports = { getColors, createColor, deleteColor };
+module.exports = { getColors, getColorXid ,createColor, deleteColor };

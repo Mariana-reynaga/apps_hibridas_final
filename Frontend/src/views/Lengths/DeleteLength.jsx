@@ -4,14 +4,14 @@ import { useState, useEffect } from 'react';
 
 import BigButton from '../../components/BigButton';
 
-function DeleteCat(){
+function DeleteLength(){
     const { id } = useParams();
     const navigate = useNavigate();
 
-    const [ gato, setgato ] = useState([]);
+    const [ largo, setlargo ] = useState([]);
 
     const handleDelete = async() =>{
-        const endpoint = await import.meta.env.VITE_DELETE_CAT+id;
+        const endpoint = await import.meta.env.VITE_DELETE_LENGTH+id;
 
         const config = {
             method: 'DELETE',
@@ -23,45 +23,44 @@ function DeleteCat(){
 
         const res = await fetch(endpoint, config);
 
-        const gato = await res.json();
-
-        console.log(gato);
+        const color = await res.json();
 
         if (res.ok) {
             navigate(`/admin`, { replace: true });
-            // location.reload();
         }
     }
 
     useEffect( ()=>{
-        const getGato = async() =>{
-            const endpoint = await import.meta.env.VITE_GET_CAT_EDIT+id;
+        const getLargo = async()=>{
+            const endpoint = await import.meta.env.VITE_GET_LENGTH+id;
+
+            console.log(endpoint);
 
             const res = await fetch(endpoint);
 
-            const gato = await res.json();
+            const largo = await res.json();
 
-            setgato(gato.data);   
+            setlargo(largo.data);
         }
-        
-        getGato();
-        }, []);
+
+        getLargo();
+    }, []);
 
     return(
         <div className="flex justify-center">
             <div className="w-4/5">
-                <h1 className="font-bold text-xl text-center">¿Estas seguro de eliminar la raza {gato.name}?</h1>
+                <h1 className="font-bold text-xl text-center">¿Estas seguro de eliminar el largo de pelo "{largo.name}"?</h1>
 
                 <div className="flex justify-center mt-3">
                     <div className="w-1/3">
                         <div className="flex justify-between">
                             <BigButton color="bg-green-500">
-                                <Link to="/admin">Volver</Link>
+                                <Link to={`/admin`}>Volver</Link>
                             </BigButton>
 
                            
                             <BigButton color="bg-red-600">
-                                <p onClick={handleDelete}>Eliminar raza</p>
+                                <p onClick={handleDelete}>Eliminar</p>
                             </BigButton>
 
                         </div>
@@ -72,4 +71,4 @@ function DeleteCat(){
     )
 }
 
-export default DeleteCat
+export default DeleteLength;

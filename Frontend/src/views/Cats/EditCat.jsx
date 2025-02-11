@@ -3,6 +3,11 @@ import React from 'react';
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from 'react';
 
+import Text from '../../components/form/InputXadd';
+import Select from '../../components/form/InputXselect';
+import Back from '../../components/utility/BackBtn';
+import Error from '../../components/ErrorNotice';
+
 function EditCat(){
     const { id } = useParams();
     const navigate = useNavigate();
@@ -80,7 +85,6 @@ function EditCat(){
             getGato();
     }, []);
 
-
     const editar = async(e)=>{
         e.preventDefault();
 
@@ -101,7 +105,7 @@ function EditCat(){
 
         const data = await res.json();
         
-        console.log("la data = " , data.data);
+        // console.log("la data = " , data.data);
 
         if (!res.ok) {
             seteditStatus(data.msg);
@@ -115,102 +119,91 @@ function EditCat(){
     return(
         <div className='flex flex-col items-center'>
             <div className="w-4/5">
-                <div className="mt-10">
+                <div className="mt-10 flex items-center">
+                    <Back destination="/admin" />
                     <h1>Editar {detalle.name}</h1>
                 </div>
 
                 <div className="mt-5">
+                    <Error>{editStatus}</Error>
+
                     <form onSubmit={editar}>
-                        <h2 className='my-2'>{editStatus}</h2>
+                        <div className="flex justify-between">
+                            <div className="w-1/2 me-3">
+                                {/* Nombre */}
+                                <Text
+                                    margin="mb-5" 
+                                    name="name" 
+                                    type="text" 
+                                    label="Nombre" 
+                                    function={handleInput}
+                                    pastData={newData.name}
+                                />
 
-                        {/* Nombre */}
-                        <div className="mb-5 flex flex-col">
-                            <label htmlFor="name">Nombre</label>
-                            <input 
-                                type="text" 
-                                id='name' 
-                                name='name' 
-                                className='border' 
-                                value={newData.name || ''}
-                                onChange={handleInput}
-                            />
-                        </div>
+                                {/* Origen */}
+                                <Text
+                                    margin="mb-5" 
+                                    name="origin" 
+                                    type="text" 
+                                    label="Origen" 
+                                    function={handleInput}
+                                    pastData={newData.origin}
+                                />
 
-                        {/* Origen */}
-                        <div className="mb-5 flex flex-col">
-                            <label htmlFor="origin">Origen</label>
-                            <input 
-                                type="text" 
-                                id='origin' 
-                                name='origin' 
-                                className='border' 
-                                value={newData.origin || ''}
-                                onChange={handleInput}
-                            />
-                        </div>
+                                {/* Foto */}
+                                <Text
+                                    margin="mb-5" 
+                                    name="img_url" 
+                                    type="text" 
+                                    label="Foto" 
+                                    function={handleInput}
+                                    pastData={newData.img_url}
+                                />
 
-                        {/* Largo de pelo */}
-                        <div className="flex mb-5 flex-col">
-                            <label htmlFor="coat_length">Largo de pelo</label>
-                            <select name="coat_length" id="coat_length" value={newData.coat_length} onChange={handleInput} >
-                                <option value="">Elegir un largo de pelo</option>
-                                {
-                                    largos.map( (largo)=>(
-                                        <option key={largo._id} value={largo._id}>{largo.name}</option>
-                                    ))
-                                }
-                            </select>
+                            </div>
 
-                        </div>
-
-                        {/* Color */}
-                        <div className="flex mb-5 flex-col">
-                            <label htmlFor="color">Color de pelo</label>
-                            <select name="color" id="color" value={newData.color} onChange={handleInput} >
-                                <option value="">Elegir un color</option>
-                                {
-                                    colores.map( (color)=>(
-                                        <option key={color._id} value={color._id} >{color.name}</option>
-                                    ))
-                                }
-                            </select>
-
-                        </div>
-                        
-                        {/* Status */}
-                        <div className="flex mb-5 flex-col">
-                            <label htmlFor="status">Estado</label>
-                            <select name="status" id="status" value={newData.status} onChange={handleInput} >
-                                <option value="">Elegir un estado</option>
-                                {
-                                    estados.map( (status)=>(
-                                        <option key={status._id} value={status._id} >{status.name}</option>
-                                    ))
-                                }
-                            </select>
-
-                        </div>
-
-                        {/* Foto */}
-                        <div className="flex mb-5 flex-col">
-                            <label htmlFor="img_url">Foto</label>
-                            <input 
-                                type="text" 
-                                id='img_url' 
-                                name='img_url'
-                                className='border'
-                                value={ newData.img_url || '' }
-                                onChange={handleInput} 
-                            />
-
+                            <div className="w-1/2 ms-3">
+                                {/* Largo de pelo */}
+                                <Select
+                                    margin="mb-5" 
+                                    name="coat_length" 
+                                    label="Largo de pelo"
+                                    function={handleInput}
+                                    optionLabel="largo de pelo"
+                                    array={largos}
+                                    pastData={newData.coat_length}
+                                />      
+                                
+                                {/* Color */}
+                                <Select
+                                    margin="mb-5" 
+                                    name="color" 
+                                    label="Color de pelo"
+                                    function={handleInput}
+                                    optionLabel="color"
+                                    array={colores}
+                                    pastData={newData.color}
+                                /> 
+                                
+                                {/* Status */}
+                                <Select
+                                    margin="mb-5" 
+                                    name="color" 
+                                    label="Estado"
+                                    function={handleInput}
+                                    optionLabel="estado"
+                                    array={estados}
+                                    pastData={newData.status}
+                                /> 
+                            </div>
                         </div>
 
                         <button type='submit' className='mt-5 px-6 py-2 border'>Editar</button>
                     </form>
-                    
                 </div>
             </div>
         </div>
+
     )
 }
 

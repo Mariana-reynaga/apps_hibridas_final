@@ -82,8 +82,7 @@ const createUser = async ( req, res ) =>{
 
         const passwordHash = await bcrypt.hash(password, salt);
         
-        try {
-            
+        try {  
             if (password.length >= 8 && email.indexOf('@') > -1 ) {
 
                 const userExist = await User.exists({ email });
@@ -139,28 +138,37 @@ const createAdmin = async ( req, res ) =>{
 // Actualizar un Usuario
 const updateUser = async ( req, res ) =>{
     const { id } = req.params;
-    const { name, password, email } = req.body;
 
-    const passwordHash = await bcrypt.hash(password, salt);
+    const { name, email } = req.body;
 
-    const newData = {name, password: passwordHash, email};
+    const newData = {name, email};
     
     try {
         const user = await User.findById(id);
 
-        if(!newData.name || !newData.email || !newData.password){
+        if(!newData.name || !newData.email ){
             res.status(400).json({msg: 'Los datos no pueden faltar.', data:{newData}});
 
         }else if (user) {
-            if (password.length >= 8 && email.indexOf('@') > -1 ) {
-                
-                const updatedUser = await User.findByIdAndUpdate(id, newData, {new: true});
     
-                res.status(200).json({msg: "El usuario fue actualizado exitosamente.", data: updatedUser});
+            const checkEmail = await User.find({email: newData.email});
 
-            }else {
-                res.status(400).json({msg: 'Datos incorrectos. La contraseña debe ser al menos 8 caracteres y el email debe contener un @.', data: { email, password }});
+            if (checkEmail.length === 0) {
+                const updatedUser = await User.findByIdAndUpdate(id, newData, {new: true});
+                
+                return res.status(200).json({msg: "El usuario fue actualizado exitosamente.", data: updatedUser});
+            }else{
+                if ( checkEmail[0].email === user.email) {
+    
+                    const updatedUser = await User.findByIdAndUpdate(id, newData, {new: true});
+                    
+                    res.status(200).json({msg: "El usuario fue actualizado exitosamente.", data: updatedUser});
+    
+                }else {
+                    res.status(400).json({msg: 'El email ya esta en uso.'});
+                }
             }
+
 
         }else{
             res.status(404).json({msg: "No se encontro el usuario", data: {}});
@@ -245,7 +253,9 @@ const logout = async ( req , res ) =>{
 
 const loginCheck = async ( req, res ) =>{
     try {
-        res.status(200).json({msg: 'el usuario si esta verificado' });
+        const userInfo = res.locals.validToken
+
+        res.status(200).json({msg: 'el usuario si esta verificado', data: userInfo });
 
     } catch (error) {
         log(chalk.bgRed('[UserController.js]: loginCheck: ' ,error));

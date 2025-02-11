@@ -1,7 +1,10 @@
 import React from 'react';
 
 import { useState, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
+
+import Back from '../../components/utility/BackBtn';
+import BoldText from '../../components/BoldText';
 
 function Details(){
     const { id } = useParams();
@@ -18,7 +21,7 @@ function Details(){
 
             const detalle = await res.json();
 
-            setDetalle(detalle.data)
+            setDetalle(detalle.data);
         }
         getGato();
     }, []);
@@ -51,34 +54,31 @@ function Details(){
     }
 
     adminCheck();
-
     return(
-        <>
-            <div className="flex justify-center">
-                <div className="w-4/5">
-                    <div className="my-3">
-                    {
-                        checkAdmin == true ? (
-                            <>
-                                <p><Link to={`/cats/edit/${id}`} >Editar Gato</Link></p>
-                                <p><Link to={`/cats/delete/${id}`} >Eliminar Gato</Link></p>
-                            </>
-                        ) : (
-                            <></>
-                        )
-                    }
+        <div className="flex flex-col items-center">
+            <div className="w-4/5">
+                <div className="flex">
+                    <Back destination="/cats" />
+                    <h1 className='text-2xl font-semibold'>{ detalle.name }</h1>
+                </div>
+
+                <div className="mt-10 flex justify-evenly">
+                    <div className="w-1/3 h-fit p-4 border rounded-md">
+                        <ul className='list-none h-1/2 flex flex-col justify-evenly'>
+                            <li> <BoldText text="Origen:" /> {detalle.origin}</li>
+                            <li> <BoldText text="Color:" /> {detalle.color}</li>
+                            <li> <BoldText text="Largo:" /> {detalle.coat_length}</li>
+                            <li> <BoldText text="Estatus:" /> {detalle.status}</li>
+                        </ul>
                     </div>
 
-                    <h1>Pagina de detalles de "{ detalle.name }"</h1>
-
-                    <p>{ detalle.name } es una raza {detalle.status}</p>
-                    
-                    <div className="w-1/5">
-                        <img src={detalle.img_url} alt="" />
+                    <div className="w-1/3">
+                        <img src={detalle.img_url} className='rounded-md' />
                     </div>
                 </div>
+
             </div>
-        </>
+        </div>        
     )
 }
 

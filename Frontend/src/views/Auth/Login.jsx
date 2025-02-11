@@ -3,24 +3,24 @@ import React from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import Text from '../../components/form/InputXadd';
+import Error from '../../components/ErrorNotice';
+
 function Login(){
     const navigate = useNavigate();
 
-    const [email, setemail] = useState('');
-
-    const [password, setpassword] = useState('');
-
+    const [ userData, setuserData ] = useState({email: '', password: ''});
     const [loginStatus, setloginStatus] = useState('');
+
+    const handleInput = (e) => {
+        const {name, value} = e.target;
+        setuserData( { ...userData, [name]:value } );
+    }
 
     const submit = async(e)=>{
         e.preventDefault();
 
         const endpoint = import.meta.env.VITE_LOGIN;
-
-        const userData = {
-            email: email,
-            password: password
-        };
 
         const config = {
             method: 'POST',
@@ -35,8 +35,6 @@ function Login(){
         
         const data = await res.json();
         
-        console.log("la data = " , data.data);
-
         if (!res.ok) {
             setloginStatus(data.msg);
             return
@@ -50,34 +48,19 @@ function Login(){
         <div className='flex flex-col items-center'>
             <div className="w-4/5">
                 <div className="mt-10">
-                    <h1>Pagina de login</h1>
+                    <h1>Iniciar sesión</h1>
                 </div>
 
                 <div className="mt-5">
-                    <h2>{ loginStatus }</h2>
-    
+                    <Error>{ loginStatus }</Error>
+                
                     <form onSubmit={submit}>
                         <div className="flex flex-col">
-                            <label htmlFor="email">email</label>
-                            <input 
-                                type="email" 
-                                id='email' 
-                                name='email' 
-                                className='border' 
-                                onChange={(e)=>{ setemail(e.target.value)}} 
-                            />
-
+                            <Text name="email" type="email" label="Email" function={handleInput} />
                         </div>
 
                         <div className="mt-5 flex flex-col">
-                            <label htmlFor="password">Contraseña</label>
-                            <input 
-                                type="password" 
-                                id='password' 
-                                name='password' 
-                                className='border'
-                                onChange={(e)=>{ setpassword(e.target.value)}}
-                            />
+                            <Text name="password" type="password" label="Contraseña" function={handleInput} />
                         </div>
 
                         <button type='submit' className='mt-5 px-6 py-2 border'>Login</button>

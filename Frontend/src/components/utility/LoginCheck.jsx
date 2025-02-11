@@ -4,7 +4,9 @@ import { Outlet, Navigate } from "react-router-dom";
 function LoginCheck(props) {
     const user = props.check;
 
-    return user == false ? <Outlet/> : <Navigate to='/' />
+    const boolean = props.bool;
+
+    return user == boolean ? <Outlet/> : <Navigate to='/' />
 }
 
 export default LoginCheck;

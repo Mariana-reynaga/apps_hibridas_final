@@ -19,6 +19,7 @@ const validateToken = ( req, res, next )=>{
         const validToken = jwt.verify(auth, secretKey);
 
         if(validToken){
+            res.locals.validToken = validToken;
             next();
         }else{
             return res.status(403).json({msg: 'Token invalido.'});

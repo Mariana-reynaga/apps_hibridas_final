@@ -65,6 +65,7 @@ const getBreedXlength = async ( req, res )=>{
             const query = Cats.where({coat_length: length});
     
             const allLengths = await query.find();
+
     
             if (allLengths.length !== 0) {
                 res.status(200).json({msg: "¡Raza encontradas!", data: allLengths});
@@ -149,12 +150,11 @@ const createCat = async ( req, res ) =>{
     const { name, origin, coat_length, status, color, img_url } = req.body;
 
     if ( !name || !origin || !coat_length || !status || !color ) {
-        res.status(400).json({msg: 'Faltan datos obligatorios.', data: { name, origin, coat_length, status, color }});
+        return res.status(400).json({msg: 'Faltan datos obligatorios.', data: { name, origin, coat_length, status, color }});
     };
 
     if( !mongoose.isValidObjectId(color) && !mongoose.isValidObjectId(status) && !mongoose.isValidObjectId(coat_length) ){
-        res.status(400).json({msg: 'El color, status y largo de pelo tiene que ser un ObjectID.', data: { color, status, coat_length }});
-        
+        return res.status(400).json({msg: 'El color, status y largo de pelo tiene que ser un ObjectID.', data: { color, status, coat_length }});
     }else{
         try {
             const colorGato     = await Colors.findById(color)
@@ -198,7 +198,7 @@ const createCat = async ( req, res ) =>{
                         img_url: "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg"
                     });
         
-                    log('el url no era valido, asi que lo remplazamos!');
+                    // log('el url no era valido, asi que lo remplazamos!');
                 }else{
                     newBreed = new Cats( { 
                         name, 
@@ -212,10 +212,10 @@ const createCat = async ( req, res ) =>{
 
                 await newBreed.save();
     
-                res.status(200).json( { msg: "Raza Creada.", data: newBreed } );
+                return res.status(200).json( { msg: "Raza Creada.", data: newBreed } );
 
             } else {
-                res.status(400).json({
+                return res.status(400).json({
                     msg: 'Algo ocurrio con color, largo o estado.'
                 });
             }

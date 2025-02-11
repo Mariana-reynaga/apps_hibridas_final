@@ -4,15 +4,26 @@ import './App.css'
 
 // Rutas
 import Home         from "./views/Home";
+  // Gatos
 import Cats         from "./views/Cats/Cats";
 import AddCat       from "./views/Cats/AddCat";
 import CatDetail    from "./views/Cats/Details";
 import EditCat      from "./views/Cats/EditCat";
-import DeleteCat  from './views/Cats/DeleteCat';
+import DeleteCat    from './views/Cats/DeleteCat';
+  // Colores
+import AddColor     from './views/Colors/AddColor';
+import DeleteColor  from './views/Colors/DeleteColor';
+  // Largo
+import AddLargo     from './views/Lengths/AddLength';
+import DeleteLength from './views/Lengths/DeleteLength'
+  // Usuario
 import Login        from "./views/Auth/Login";
 import Logout       from "./views/Auth/Logout";
 import Register     from "./views/Auth/Register";
+import Profile      from './views/User/Profile';
+import EditProfile  from './views/User/EditProfile';
 import Admin        from "./views/Admin";
+
 import NotFound     from "./views/NotFound";
 
 // To protect routes
@@ -22,6 +33,7 @@ import AdminCheck from './components/utility/AdminCheck';
 function App() {
     const [checkUser, setcheckUser] = useState(false);
     const [checkAdmin, setcheckAdmin] = useState(false);
+    const [loginInfo, setloginInfo] = useState('');
 
     const loginCheck = async()=>{
       const endpoint = import.meta.env.VITE_LOGIN_CHECK;
@@ -36,7 +48,11 @@ function App() {
 
       const res = await fetch(endpoint, config);
 
-      const loginCheck = await res.json();
+      const loginInfo = await res.json();
+
+      setloginInfo(loginInfo.data.userID);
+      
+      // console.log(loginCheck.data.userID);
 
       if(res.ok){
         setcheckUser(true);
@@ -88,7 +104,9 @@ function App() {
 
             {
               checkAdmin == true ? (
-                <li><NavLink to="/cats/add">Agregar Gato</NavLink></li>
+                <>
+                  <li><NavLink to="/admin">Admin</NavLink></li>
+                </>
               ) : (
                 <></>
               )
@@ -97,7 +115,7 @@ function App() {
             {
               checkUser == true ? (
                 <>
-                  <li><NavLink to="">Perfil</NavLink></li>
+                  <li><NavLink to={`/profile/${loginInfo}`}>Perfil</NavLink></li>
                   <li><NavLink to="/logout">Logout</NavLink></li>
                 </>
               ) : (
@@ -113,26 +131,35 @@ function App() {
 
       {/* Rutas */}
       <Routes>
-        <Route    path="/"                  element={ <Home /> }/>
-        <Route    path="/cats"              element={ <Cats /> }/>
-        <Route    path="/cats/:id"          element={ <CatDetail /> }/>
+        <Route    path="/"                    element={ <Home /> }/>
+        <Route    path="/cats"                element={ <Cats /> }/>
+        <Route    path="/cats/:id"            element={ <CatDetail /> }/>
 
-        <Route                              element={ <AdminCheck check={checkAdmin} /> }>
+        <Route                                element={ <AdminCheck check={checkAdmin} /> }>
 
-          <Route  path="/cats/add"          element={ <AddCat /> }/>
-          <Route  path="/cats/edit/:id"     element={ <EditCat /> }/>
-          <Route  path="/cats/delete/:id"   element={ <DeleteCat /> }/>
-          <Route  path="/admin"             element={ <Admin /> }/>
+          <Route  path="/cats/add"            element={ <AddCat /> }/>
+          <Route  path="/cats/edit/:id"       element={ <EditCat /> }/>
+          <Route  path="/cats/delete/:id"     element={ <DeleteCat /> }/>
+          <Route  path='/colors/add'          element={ <AddColor/> }/>
+          <Route  path="/colors/delete/:id"   element={ <DeleteColor /> }/>
+          <Route  path='/lengths/add'         element={ <AddLargo /> } />
+          <Route  path='/lengths/delete/:id'  element={ <DeleteLength /> } />
+          <Route  path="/admin"               element={ <Admin /> }/>
 
-        </Route>
-
-        <Route                              element={ <LoginCheck check={checkUser} /> }>
-          <Route  path="/login"             element={ <Login /> }/>
-          <Route  path="/register"          element={ <Register />}/>
         </Route>
         
-        <Route    path="/logout"            element={ <Logout/> }/>
-        <Route    path="*"                  element={ <NotFound /> }/>
+        <Route                                element={ <LoginCheck bool={true} check={checkUser} /> }>
+          <Route  path="/profile/:id"         element={ <Profile /> }/>
+          <Route  path="/profile/edit/:id"    element={ <EditProfile /> }/>
+        </Route>
+
+        <Route                                element={ <LoginCheck bool={false} check={checkUser} /> }>
+          <Route  path="/login"               element={ <Login /> }/>
+          <Route  path="/register"            element={ <Register />}/>
+        </Route>
+        
+        <Route    path="/logout"              element={ <Logout/> }/>
+        <Route    path="*"                    element={ <NotFound /> }/>
       </Routes>
       
     </>

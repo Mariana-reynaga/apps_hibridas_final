@@ -28,7 +28,7 @@ function Cats(){
 
             <div className="flex justify-center">
                 <div className="w-4/5">
-                    <div className="mt-10 grid grid-cols-3">
+                    <div className="mt-10 grid grid-cols-3 gap-y-4">
                         {
                             cats.map( (gato)=>(
                                 <CatCard
