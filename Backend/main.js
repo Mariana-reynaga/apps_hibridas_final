@@ -52,7 +52,7 @@ app.use( express.static('public') );
 const cors = require('cors');
 app.use( cors({
     credentials: true,
-    origin: 'http://localhost:5173'
+    origin: 'https://grand-capybara-c68803.netlify.app'
 }))
 
 

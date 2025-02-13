@@ -11,6 +11,7 @@ function Home(){
     useEffect( ()=>{
         const getRandom = async()=>{
             const endpoint = import.meta.env.VITE_RANDOM_CAT;
+            // const endpoint = "https://apps-hibridas-final.onrender.com/api/cats/3random";
 
             const res = await fetch(endpoint);
 
