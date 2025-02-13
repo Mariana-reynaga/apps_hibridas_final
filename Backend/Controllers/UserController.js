@@ -13,11 +13,12 @@ const salt = 10;
 
 // Traer Todos Los Usuarios
 const bringUsers = async ( req, res ) => {
-    const users = await User.find();
+    const userInfo = res.locals.validToken.userID
+
+    const users = await User.find({_id: {$not: {$eq: userInfo}}});
 
     try {
         if (users.length == 0) {
-            log(chalk.blue("No hay usuarios"))
             res.status(404).json( { msg: "No existen Usuarios"} );
     
         }else {
@@ -49,26 +50,6 @@ const getUserXname = async ( req, res ) => {
 
     }catch(error){
         log(chalk.bgRed('[UserController.js]: getUserXname: ' ,error));
-        res.status(500).json({msg: 'OOPS, tenemos un error', data: {}});
-    }
-};
-
-// Traer los usuarios que NO son administradores
-const getNonAdmin = async ( req, res ) => {
-    try{
-        const query = User.where({role: "user"});
-
-        const nonAdmin = await query.find();
-
-        if (nonAdmin) {
-            res.status(200).json({msg: "No administradores:", data: nonAdmin});
-
-        } else {
-            res.status(404).json({msg: "No se encontraron usuarios.", data: {}});
-        }
-
-    }catch(error){
-        log(chalk.bgRed('[UserController.js]: getNonAdmin: ' ,error));
         res.status(500).json({msg: 'OOPS, tenemos un error', data: {}});
     }
 };
@@ -143,6 +124,32 @@ const createAdmin = async ( req, res ) =>{
                 const updatedUser = await User.findByIdAndUpdate(id, {role: "admin"}, {new: true});
     
                 res.status(200).json({msg: "El usuario ahora es administrador", data: updatedUser});
+            }
+
+        } else {
+            res.status(404).json({msg: "El usuario no existe."});
+        }
+
+    } catch (error) {
+        log(chalk.bgRed('[UserController.js]: login: ' ,error));
+        res.status(500).json({msg: 'OOPS, tenemos un error', data: {}});
+    }
+}
+
+// Crear un user
+const demoteAdmin = async ( req, res ) =>{
+    const { id } = req.params;
+
+    try {
+        const user = await User.findById(id);
+
+        if (user) {       
+            if (user.role === "user") {
+                res.status(400).json({msg: "El usuario ya no es administrador."});
+            }else{
+                const updatedUser = await User.findByIdAndUpdate(id, {role: "user"}, {new: true});
+    
+                res.status(200).json({msg: "El usuario ahora ya no es administrador", data: updatedUser});
             }
 
         } else {
@@ -296,14 +303,14 @@ const checkIfAdmin = async ( req, res ) =>{
 module.exports = { 
     bringUsers, 
     getUserXname,
-    getNonAdmin,
     getUserXid, 
     createUser, 
     updateUser,
     deleteUser, 
     login,
     logout,
-    createAdmin, 
+    createAdmin,
+    demoteAdmin, 
     loginCheck,
     checkIfAdmin
 };

@@ -26,7 +26,7 @@ function DeleteLength(){
         const color = await res.json();
 
         if (res.ok) {
-            navigate(`/admin`, { replace: true });
+            navigate(`/lengths`, { replace: true });
         }
     }
 

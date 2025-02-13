@@ -41,7 +41,7 @@ function AddLength(){
             return
         }
     
-        navigate(`/admin`, { replace: true });
+        navigate(`/lengths`, { replace: true });
     }
 
     return(

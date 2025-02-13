@@ -41,7 +41,7 @@ function AddColor (){
             return
         }
     
-        navigate(`/admin`, { replace: true });
+        navigate(`/colors`, { replace: true });
     }
 
     return(

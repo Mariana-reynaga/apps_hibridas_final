@@ -1,20 +1,19 @@
-import React from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { useState, useEffect } from 'react';
+import { React, useState, useEffect } from 'react';
 
 import BigButton from '../../components/BigButton';
 
-function DeleteColor(){
+function DemoteAdmin(){
     const { id } = useParams();
     const navigate = useNavigate();
 
-    const [ color, setcolor ] = useState([]);
+    const [ user, setuser ] = useState([]);
 
-    const handleDelete = async() =>{
-        const endpoint = await import.meta.env.VITE_DELETE_COLOR+id;
+    const handleDemotion = async() =>{
+        const endpoint = await import.meta.env.VITE_DEMOTE_ADMIN+id;
 
         const config = {
-            method: 'DELETE',
+            method: 'PUT',
             headers:{
                 'Content-type': 'application/json'
             },
@@ -23,35 +22,33 @@ function DeleteColor(){
 
         const res = await fetch(endpoint, config);
 
-        const color = await res.json();
+        const user = await res.json();
 
         if (res.ok) {
-            navigate(`/colors`, { replace: true });
+            navigate(`/users`, { replace: true });
         }
     }
 
     useEffect( ()=>{
-        const getColor = async() =>{
-            const endpoint = await import.meta.env.VITE_COLOR+id;
+        const getUser = async()=>{
+            const endpoint = await import.meta.env.VITE_USERS+id;
 
             console.log(endpoint);
 
             const res = await fetch(endpoint);
 
-            const color = await res.json();
+            const user = await res.json();
 
-            setcolor(color.data);
-
-            // console.log(color.data);
+            setuser(user.data);
         }
-        
-        getColor();
-        }, []);
+
+        getUser();
+    }, []);
 
     return(
         <div className="flex justify-center">
             <div className="w-4/5">
-                <h1 className="font-bold text-xl text-center">¿Estas seguro de eliminar el color {color.name}?</h1>
+                <h1 className="font-bold text-xl text-center">¿Estas seguro de sacar permisos de administrador a {user.name}?</h1>
 
                 <div className="flex justify-center mt-3">
                     <div className="w-1/3">
@@ -62,7 +59,7 @@ function DeleteColor(){
 
                            
                             <BigButton color="bg-red-600">
-                                <p onClick={handleDelete}>Eliminar color</p>
+                                <p onClick={handleDemotion}>Bajar</p>
                             </BigButton>
 
                         </div>
@@ -73,4 +70,4 @@ function DeleteColor(){
     )
 }
 
-export default DeleteColor
+export default DemoteAdmin;

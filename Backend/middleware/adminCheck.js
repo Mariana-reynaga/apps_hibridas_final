@@ -12,9 +12,10 @@ const adminCheck = (req, res, next) => {
 
     try {
         const validToken = jwt.verify(token, secretKey);
-    
+
+        log(validToken.role);
+
         if(validToken.role === 'admin'){
-            
             next();
         }else{
             res.status(403).json({msg: 'El usuario no tiene derecho de admin'});

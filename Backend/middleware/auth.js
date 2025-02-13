@@ -11,8 +11,7 @@ const validateToken = ( req, res, next )=>{
     const auth = req.cookies["access_token"];
 
     if (!auth) {
-        res.status(401).json({msg: "El token no puede faltar."});
-        return
+        return res.status(401).json({msg: "El token no puede faltar."});
     }
 
     try {

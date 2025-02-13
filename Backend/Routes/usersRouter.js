@@ -10,22 +10,20 @@ const userCheck = require('../middleware/userCheck');
 const { 
     bringUsers, 
     getUserXname,
-    getNonAdmin,
     getUserXid,
     createUser, 
     updateUser,
     deleteUser, 
     login,
     logout,
-    createAdmin, 
+    createAdmin,
+    demoteAdmin,
     loginCheck,
     checkIfAdmin
 } = require('../Controllers/UserController');
 
 // Rutas
-router.get('/', bringUsers);
-
-router.get('/nonAdmin', getNonAdmin);
+router.get('/', validateToken, bringUsers);
 
 router.get('/name/:name', getUserXname);
 
@@ -41,7 +39,9 @@ router.post('/login', login);
 
 router.get('/logout/logout', logout);
 
-router.put('/admin/:id',validateToken, adminCheck, createAdmin);
+router.put('/makeAdmin/:id', validateToken, adminCheck, createAdmin);
+
+router.put('/demoteAdmin/:id', validateToken, adminCheck, demoteAdmin);
 
 router.get('/check/loginCheck', validateToken ,loginCheck);
 
