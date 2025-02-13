@@ -25,7 +25,8 @@ function Register(){
         const config = {
             method: 'POST',
             headers:{
-                'Content-type': 'application/json'
+                'Content-type': 'application/json',
+                'Access-Control-Allow-Origin': 'https://apps-hibridas-final.onrender.com'
             },
             body: JSON.stringify(userData)
         }

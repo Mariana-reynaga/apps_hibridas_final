@@ -16,7 +16,8 @@ function DeleteLength(){
         const config = {
             method: 'DELETE',
             headers:{
-                'Content-type': 'application/json'
+                'Content-type': 'application/json',
+                'Access-Control-Allow-Origin': 'https://apps-hibridas-final.onrender.com'
             },
             credentials: 'include'
         }
