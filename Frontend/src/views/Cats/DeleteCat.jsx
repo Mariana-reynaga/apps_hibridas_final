@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from 'react';
 
 import BigButton from '../../components/BigButton';
+import H1 from '../../components/H1Comp';
 
 function DeleteCat(){
     const { id } = useParams();
@@ -29,7 +30,6 @@ function DeleteCat(){
 
         if (res.ok) {
             navigate(`/admin`, { replace: true });
-            // location.reload();
         }
     }
 
@@ -50,17 +50,17 @@ function DeleteCat(){
     return(
         <div className="flex justify-center">
             <div className="w-4/5">
-                <h1 className="font-bold text-xl text-center">¿Estas seguro de eliminar la raza {gato.name}?</h1>
+                <div className="flex flex-col items-center">
+                    <H1>¿Estas seguro de eliminar la raza "{gato.name}"?</H1>
 
-                <div className="flex justify-center mt-3">
-                    <div className="w-1/3">
+                    <div className="w-1/3 mt-5">
                         <div className="flex justify-between">
                             <BigButton color="bg-green-500">
                                 <Link to="/admin">Volver</Link>
                             </BigButton>
 
                            
-                            <BigButton color="bg-red-600">
+                            <BigButton color="bg-red-600" colorText="text-slate-50">
                                 <p onClick={handleDelete}>Eliminar raza</p>
                             </BigButton>
 

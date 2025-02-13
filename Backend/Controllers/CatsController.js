@@ -11,13 +11,13 @@ const Colors = require('../Models/ColorsModel');
 const Length = require('../Models/LengthModel');
 const Status = require('../Models/StatusModel');
 
-// Traer todas las razas experimentales
+// Traer todas las razas
 const getBreeds = async ( req, res ) => {
     const breeds = await Cats.find();
 
     try {
         if (breeds.length == 0) {
-            res.status(404).json( { msg: "No existen razas."} );
+            res.status(200).json( { msg: "No existen razas.", data: breeds} );
     
         }else {
             res.status(200).json( { msg: "Razas: ", data: breeds } );
@@ -92,21 +92,22 @@ const getBreedXid = async ( req, res ) => {
         const breedStatus = await Status.findById(breed.status);
         const breedLength = await Length.findById(breed.coat_length);
 
-        const beedData = {
+        const breedData = {
             name: breed.name,
             origin: breed.origin,
-            color: breedColor.name,
             coat_length: breedLength.name,
+            color: breedColor.name,
             status: breedStatus.name,
             img_url: breed.img_url
         };
 
         if (breed) {
-            res.status(200).json({msg: "¡Raza encontrada!", data: beedData});
+            res.status(200).json({msg: "¡Raza encontrada!", data: breedData});
 
         }else{
             res.status(404).json({msg: "No se encontro la raza.", data: {}});
         }
+
     } catch (error) {
         log(chalk.bgRed('[CatsController.js]: getBreedXid: ' ,error));
         res.status(500).json({msg: 'OOPS, tenemos un error', data: {}});

@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import Text from '../../components/form/InputXadd';
 import Back from '../../components/utility/BackBtn';
 import Error from '../../components/ErrorNotice';
+import H1 from '../../components/H1Comp';
 
 function AddLength(){
     const navigate = useNavigate();
@@ -48,7 +49,7 @@ function AddLength(){
             <div className="w-4/5">
                 <div className="mt-10 flex items-center">
                     <Back destination="/admin" />
-                    <h1 className='font-semibold text-xl'>Añadir Largo</h1>
+                    <H1>Añadir Largo</H1>
                 </div>
 
                 <div className="mt-5">

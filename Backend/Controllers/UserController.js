@@ -53,6 +53,26 @@ const getUserXname = async ( req, res ) => {
     }
 };
 
+// Traer los usuarios que NO son administradores
+const getNonAdmin = async ( req, res ) => {
+    try{
+        const query = User.where({role: "user"});
+
+        const nonAdmin = await query.find();
+
+        if (nonAdmin) {
+            res.status(200).json({msg: "No administradores:", data: nonAdmin});
+
+        } else {
+            res.status(404).json({msg: "No se encontraron usuarios.", data: {}});
+        }
+
+    }catch(error){
+        log(chalk.bgRed('[UserController.js]: getNonAdmin: ' ,error));
+        res.status(500).json({msg: 'OOPS, tenemos un error', data: {}});
+    }
+};
+
 // Traer un Usuario por ID
 const getUserXid = async ( req, res ) => {
     const {id} = req.params; 
@@ -275,10 +295,11 @@ const checkIfAdmin = async ( req, res ) =>{
 
 module.exports = { 
     bringUsers, 
-    getUserXname, 
+    getUserXname,
+    getNonAdmin,
     getUserXid, 
     createUser, 
-    updateUser, 
+    updateUser,
     deleteUser, 
     login,
     logout,

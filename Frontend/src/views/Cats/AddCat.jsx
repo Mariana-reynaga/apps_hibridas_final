@@ -7,6 +7,7 @@ import Text from '../../components/form/InputXadd';
 import Select from '../../components/form/InputXselect';
 import Back from '../../components/utility/BackBtn';
 import Error from '../../components/ErrorNotice';
+import H1 from '../../components/H1Comp';
 
 function AddCat (){
     const navigate = useNavigate();
@@ -92,7 +93,7 @@ function AddCat (){
             <div className="w-4/5">
                 <div className="mt-10 flex items-center">
                     <Back destination="/admin" />
-                    <h1 className='font-semibold text-xl'>Añadir Gatos</h1>
+                    <H1>Añadir Gatos</H1>
                 </div>
 
                 <div className="mt-5">

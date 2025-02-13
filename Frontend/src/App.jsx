@@ -51,16 +51,12 @@ function App() {
       const loginInfo = await res.json();
 
       setloginInfo(loginInfo.data.userID);
-      
-      // console.log(loginCheck.data.userID);
 
       if(res.ok){
         setcheckUser(true);
-        // console.log("el user esta verificado = ", checkUser);
 
       }else{
         setcheckUser(false);
-        // console.log("el user no esta verificado = ", checkUser);
       }
     }
 
@@ -79,15 +75,11 @@ function App() {
 
       const adminCheck = await res.json();
 
-      // console.log(adminCheck);
-
       if(res.ok){
         setcheckAdmin(true);
-        // console.log("el user es admin = ", checkAdmin);
 
       }else{
         setcheckAdmin(false);
-        // console.log("el user no es admin = ", checkAdmin);
       }
     }
 
@@ -96,7 +88,7 @@ function App() {
 
   return (
     <>
-      <div className="py-5 mb-5 flex justify-center bg-green-600">
+      <div className="py-5 mb-10 flex justify-center bg-green-600">
         <div className="w-4/5">
           <ul className='flex justify-between'>
             <li><NavLink to="/">Home</NavLink></li>
@@ -131,35 +123,35 @@ function App() {
 
       {/* Rutas */}
       <Routes>
-        <Route    path="/"                    element={ <Home /> }/>
-        <Route    path="/cats"                element={ <Cats /> }/>
-        <Route    path="/cats/:id"            element={ <CatDetail /> }/>
+        <Route    path="/"                              element={ <Home /> }/>
+        <Route    path="/cats"                          element={ <Cats /> }/>
+        <Route    path="/cats/:id"                      element={ <CatDetail /> }/>
 
-        <Route                                element={ <AdminCheck check={checkAdmin} /> }>
+        <Route                                          element={ <AdminCheck check={checkAdmin} /> }>
 
-          <Route  path="/cats/add"            element={ <AddCat /> }/>
-          <Route  path="/cats/edit/:id"       element={ <EditCat /> }/>
-          <Route  path="/cats/delete/:id"     element={ <DeleteCat /> }/>
-          <Route  path='/colors/add'          element={ <AddColor/> }/>
-          <Route  path="/colors/delete/:id"   element={ <DeleteColor /> }/>
-          <Route  path='/lengths/add'         element={ <AddLargo /> } />
-          <Route  path='/lengths/delete/:id'  element={ <DeleteLength /> } />
-          <Route  path="/admin"               element={ <Admin /> }/>
+          <Route  path="/cats/add"                      element={ <AddCat /> }/>
+          <Route  path="/cats/edit/:id"                 element={ <EditCat /> }/>
+          <Route  path="/cats/delete/:id"               element={ <DeleteCat /> }/>
+          <Route  path='/colors/add'                    element={ <AddColor/> }/>
+          <Route  path="/colors/delete/:id"             element={ <DeleteColor /> }/>
+          <Route  path='/lengths/add'                   element={ <AddLargo /> } />
+          <Route  path='/lengths/delete/:id'            element={ <DeleteLength /> } />
+          <Route  path="/admin"                         element={ <Admin /> }/>
 
         </Route>
         
-        <Route                                element={ <LoginCheck bool={true} check={checkUser} /> }>
-          <Route  path="/profile/:id"         element={ <Profile /> }/>
-          <Route  path="/profile/edit/:id"    element={ <EditProfile /> }/>
+        <Route                                          element={ <LoginCheck bool={true} check={checkUser} /> }>
+          <Route  path="/profile/:id"                   element={ <Profile /> }/>
+          <Route  path="/profile/edit/:id"              element={ <EditProfile /> }/>
         </Route>
 
-        <Route                                element={ <LoginCheck bool={false} check={checkUser} /> }>
-          <Route  path="/login"               element={ <Login /> }/>
-          <Route  path="/register"            element={ <Register />}/>
+        <Route                                          element={ <LoginCheck bool={false} check={checkUser} /> }>
+          <Route  path="/login"                         element={ <Login /> }/>
+          <Route  path="/register"                      element={ <Register />}/>
         </Route>
         
-        <Route    path="/logout"              element={ <Logout/> }/>
-        <Route    path="*"                    element={ <NotFound /> }/>
+        <Route    path="/logout"                        element={ <Logout/> }/>
+        <Route    path="*"                              element={ <NotFound /> }/>
       </Routes>
       
     </>

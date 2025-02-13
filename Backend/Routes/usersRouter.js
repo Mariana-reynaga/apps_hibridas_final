@@ -9,10 +9,11 @@ const userCheck = require('../middleware/userCheck');
 
 const { 
     bringUsers, 
-    getUserXname, 
-    getUserXid, 
+    getUserXname,
+    getNonAdmin,
+    getUserXid,
     createUser, 
-    updateUser, 
+    updateUser,
     deleteUser, 
     login,
     logout,
@@ -24,13 +25,15 @@ const {
 // Rutas
 router.get('/', bringUsers);
 
+router.get('/nonAdmin', getNonAdmin);
+
 router.get('/name/:name', getUserXname);
 
 router.get('/:id', getUserXid);
 
 router.post('/', createUser);
 
-router.put('/:id',validateToken, userCheck , updateUser);
+router.put('/:id',validateToken, userCheck, updateUser);
 
 router.delete('/:id',validateToken, deleteUser); 
 

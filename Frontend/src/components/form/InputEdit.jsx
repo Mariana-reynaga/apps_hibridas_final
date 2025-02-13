@@ -14,6 +14,7 @@ function InputXadd(props) {
                 type={props.type} 
                 className='mt-2 p-2 border rounded-md' 
                 onChange={props.function}
+                value={ data || ''}
             />
         </div>
     )

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 
 import BigButton from '../components/BigButton';
 import H2Comp from '../components/H2Comp';
+import H1 from '../components/H1Comp';
 
 function Admin(){
     const [ gatos, setgatos] = useState([]);
@@ -50,7 +51,7 @@ function Admin(){
         <>
             <div className="flex justify-center">
                 <div className="w-4/5">
-                    <h1 className='font-semibold text-lg'>Panel de control de admin</h1>
+                    <H1>Administración</H1>
 
                     <div className="mt-5 grid grid-cols-2 gap-x-3">
 
@@ -69,7 +70,7 @@ function Admin(){
                                             <div className="my-2 flex justify-between items-center" key={color._id}>
                                                 <p>{color.name}</p>
 
-                                                <BigButton color="bg-red-600">
+                                                <BigButton color="bg-red-600" colorText="text-slate-50">
                                                     <Link to={`/colors/delete/${color._id}`} >Eliminar</Link>
                                                 </BigButton>
                                             </div>
@@ -95,7 +96,7 @@ function Admin(){
                                             <div className="my-2 flex justify-between items-center" key={largo._id}>
                                                 <p>{largo.name}</p>
 
-                                                <BigButton color="bg-red-600">
+                                                <BigButton color="bg-red-600" colorText="text-slate-50">
                                                     <Link to={`/lengths/delete/${largo._id}`} >Eliminar</Link>
                                                 </BigButton>
                                             </div>
@@ -116,37 +117,43 @@ function Admin(){
                                 <Link to="/cats/add" className="underline underline-offset-2">Agregar Gato</Link>
                             </div>
                             
-                            <div className="flex justify-center">
-                                <table className='table-fixed w-[90%]'>
-                                    <thead>
-                                        <tr>
-                                            <th>Nombre</th>
-                                            <th>Creado</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
+                            {
+                                gatos.length === 0 ? (
+                                    <></>
+                                ) : (
+                                    <div className="flex justify-center">
+                                        <table className='table-fixed w-[90%]'>
+                                            <thead>
+                                                <tr>
+                                                    <th>Nombre</th>
+                                                    <th>Creado</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
 
-                                    <tbody>
-                                        {
-                                            gatos.map( (gato)=>(
-                                            <tr key={gato._id}>
-                                                <td>{gato.name}</td>
-                                                <td>{new Date(gato.created_at).toLocaleDateString('es-AR')}</td>
-                                                <td className='flex justify-evenly'>
-                                                    <BigButton color="bg-blue-600">
-                                                        <Link to={`/cats/edit/${gato._id}`} >Editar</Link>
-                                                    </BigButton>
+                                            <tbody>
+                                                {
+                                                    gatos.map( (gato)=>(
+                                                    <tr key={gato._id}>
+                                                        <td>{gato.name}</td>
+                                                        <td>{new Date(gato.created_at).toLocaleDateString('es-AR')}</td>
+                                                        <td className='flex justify-evenly'>
+                                                            <BigButton color="bg-sky-500/20" colorText="text-blue-900">
+                                                                <Link to={`/cats/edit/${gato._id}`} >Editar</Link>
+                                                            </BigButton>
 
-                                                    <BigButton color="bg-red-600">
-                                                        <Link to={`/cats/delete/${gato._id}`} >Eliminar</Link>
-                                                    </BigButton>
-                                                </td>
-                                            </tr>
-                                            ))
-                                        }
-                                    </tbody>
-                                </table>
-                            </div>
+                                                            <BigButton color="bg-red-600" colorText="text-slate-50">
+                                                                <Link to={`/cats/delete/${gato._id}`} >Eliminar</Link>
+                                                            </BigButton>
+                                                        </td>
+                                                    </tr>
+                                                    ))
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                )
+                            }
                         </div>
                     </div>
                 </div>  

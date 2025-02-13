@@ -67,7 +67,6 @@ function EditProfile(){
         }
     
         navigate(`/profile/${id}`, { replace: true });
-        // location.reload();
     }
 
     return(

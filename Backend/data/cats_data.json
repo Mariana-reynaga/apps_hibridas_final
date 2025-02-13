@@ -1,3 +1,114 @@
 [
-    
+    {
+        "name": "Aegean",
+        "origin": "Grecia",
+        "color": "678fcf0902f3c48918e1c805",
+        "coat_length": "67990d05aacf3e453f6a1472",
+        "img_url": "https://upload.wikimedia.org/wikipedia/commons/9/96/Aegean_Island_Cat.jpg",
+        "status": "679b7ed5b6e412e492e063b5"
+    },
+    {
+        "name": "Aphrodite",
+        "origin": "Grecia",
+        "color": "67acc098eab8aa295b76919e",
+        "coat_length": "67990d05aacf3e453f6a1472",
+        "img_url": "https://www.catster.com/wp-content/uploads/2023/11/cyprus-cat-stretching_FrimuFilms-Shutterstock.jpg",
+        "status": "679b7ed5b6e412e492e063b5"
+    },
+    {
+        "name": "Bambino",
+        "origin": "Italia",
+        "color": "679b84859e08b0c1a631f40c",
+        "coat_length": "679b84329e08b0c1a631f3f9",
+        "img_url": "https://i2.wp.com/cat-world.com/wp-content/uploads/2019/04/bambino-cat.jpg",
+        "status": "679b7ed5b6e412e492e063b5"
+    },
+    {
+        "name": "Foldex",
+        "origin": "Canada",
+        "color": "6759c93b4ed8ec36dfddd6d0",
+        "coat_length": "67990d05aacf3e453f6a1472",
+        "img_url": "https://cdn-fastly.petguide.com/media/2022/02/16/8215970/foldex.jpg?size=720x845&nocrop=1",
+        "status": "679b7ed5b6e412e492e063b5"
+    },
+    {
+        "name": "Highlander",
+        "origin": "Estados Unidos",
+        "color": "67acc14092fdbd1502742a22",
+        "coat_length": "67990d05aacf3e453f6a1472",
+        "img_url": "https://upload.wikimedia.org/wikipedia/commons/1/15/Highlander-7.jpg",
+        "status": "679b7ed5b6e412e492e063b5"
+    },
+    {
+        "name": "Skookum",
+        "origin": "Estados Unidos",
+        "color": "678fcf0902f3c48918e1c805",
+        "coat_length": "67990e332057612f492314ea",
+        "img_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlNeoCMYNc9nv50Z2Nxm9O1QQJQKGp_Y0YJw&s",
+        "status": "679b7ed5b6e412e492e063b5"
+    },
+    {
+        "name": "Tiffanie",
+        "origin": "Inglaterra",
+        "color": "67acc1813cee58d8dccacb87",
+        "coat_length": "67990e332057612f492314ea",
+        "img_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMUvf8FYJUjetMTFCVMwP8d64gEfymZ4dW5A&s",
+        "status": "679b7ed5b6e412e492e063b5"
+    },
+    {
+        "name": "Bengal",
+        "origin": "Sudo-Este de Asia",
+        "color": "67acc14092fdbd1502742a22",
+        "coat_length": "67990d05aacf3e453f6a1472",
+        "img_url": "https://fifeweb.org/app/uploads/2023/12/BEN-57___2O8A4180.jpg",
+        "status": "679913c0df059813fe6ca575"
+    },
+    {
+        "name": "British Longhair",
+        "origin": "Inglaterra",
+        "color": "67a4dc77fd3113281597ebca",
+        "coat_length": "67990e332057612f492314ea",
+        "img_url": "https://fifeweb.org/app/uploads/2023/12/BLH-59___2O8A4948.jpg",
+        "status": "679913c0df059813fe6ca575"
+    },
+    {
+        "name": "Burmilla",
+        "origin": "Inglaterra",
+        "color": "67acc2936c9e720eaf5f9691",
+        "coat_length": "67990d05aacf3e453f6a1472",
+        "img_url": "https://fifeweb.org/app/uploads/2023/10/63___0015.jpg",
+        "status": "679913c0df059813fe6ca575"
+    },
+    {
+        "name": "Don Sphynx",
+        "origin": "Rusia",
+        "color": "679b84859e08b0c1a631f40c",
+        "coat_length": "679b84329e08b0c1a631f3f9",
+        "img_url": "https://fifeweb.org/app/uploads/2023/10/66___IMG_8397.jpg",
+        "status": "679913c0df059813fe6ca575"
+    },
+    {
+        "name": "Somali",
+        "origin": "Etopia",
+        "color": "6759c93b4ed8ec36dfddd6d0",
+        "coat_length": "67990e332057612f492314ea",
+        "img_url": "https://fifeweb.org/app/uploads/2023/12/SOM-95___0009.jpg",
+        "status": "679913c0df059813fe6ca575"
+    },
+    {
+        "name": "Oriental Longhair",
+        "origin": "Estados Unidos",
+        "color": "67acc1813cee58d8dccacb87",
+        "coat_length": "67990e332057612f492314ea",
+        "img_url": "https://fifeweb.org/app/uploads/2023/12/OLH.jpg",
+        "status": "679913c0df059813fe6ca575"
+    },
+    {
+        "name": "German Rex",
+        "origin": "Alemania",
+        "color": "67acc30dfbec5fc01c4eb40e",
+        "coat_length": "67990e332057612f492314ea",
+        "img_url": "https://fifeweb.org/app/uploads/2023/12/GRX.jpg",
+        "status": "679913c0df059813fe6ca575"
+      }
 ]

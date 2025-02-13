@@ -5,13 +5,12 @@ import { useParams } from 'react-router-dom'
 
 import Back from '../../components/utility/BackBtn';
 import BoldText from '../../components/BoldText';
+import H1 from '../../components/H1Comp';
 
 function Details(){
     const { id } = useParams();
 
     const [ detalle, setDetalle ] = useState([]);
-
-    const [checkAdmin, setcheckAdmin] = useState(false);
 
     useEffect( ()=>{
         const getGato = async() =>{
@@ -23,43 +22,16 @@ function Details(){
 
             setDetalle(detalle.data);
         }
+
         getGato();
     }, []);
 
-    const adminCheck = async()=>{
-        const endpoint = import.meta.env.VITE_ADMIN_CHECK;
-  
-        const config = {
-          method: 'GET',
-          headers:{
-              'Content-type': 'application/json'
-          },
-          credentials: 'include'
-      }
-  
-        const res = await fetch(endpoint, config);
-  
-        const adminCheck = await res.json();
-  
-        // console.log(adminCheck);
-  
-        if(res.ok){
-          setcheckAdmin(true);
-          // console.log("el user es admin = ", checkAdmin);
-  
-        }else{
-          setcheckAdmin(false);
-          // console.log("el user no es admin = ", checkAdmin);
-        }
-    }
-
-    adminCheck();
     return(
         <div className="flex flex-col items-center">
             <div className="w-4/5">
-                <div className="flex">
+                <div className="flex items-center">
                     <Back destination="/cats" />
-                    <h1 className='text-2xl font-semibold'>{ detalle.name }</h1>
+                    <H1>{ detalle.name }</H1>
                 </div>
 
                 <div className="mt-10 flex justify-evenly">

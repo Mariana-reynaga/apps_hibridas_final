@@ -3,10 +3,11 @@ import React from 'react';
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from 'react';
 
-import Text from '../../components/form/InputXadd';
-import Select from '../../components/form/InputXselect';
+import TextEdit from '../../components/form/InputEdit';
+import Select from '../../components/form/SelectEdit';
 import Back from '../../components/utility/BackBtn';
 import Error from '../../components/ErrorNotice';
+import H1 from '../../components/H1Comp';
 
 function EditCat(){
     const { id } = useParams();
@@ -121,7 +122,7 @@ function EditCat(){
             <div className="w-4/5">
                 <div className="mt-10 flex items-center">
                     <Back destination="/admin" />
-                    <h1>Editar {detalle.name}</h1>
+                    <H1>Editar "{detalle.name}"</H1>
                 </div>
 
                 <div className="mt-5">
@@ -131,7 +132,7 @@ function EditCat(){
                         <div className="flex justify-between">
                             <div className="w-1/2 me-3">
                                 {/* Nombre */}
-                                <Text
+                                <TextEdit
                                     margin="mb-5" 
                                     name="name" 
                                     type="text" 
@@ -141,7 +142,7 @@ function EditCat(){
                                 />
 
                                 {/* Origen */}
-                                <Text
+                                <TextEdit
                                     margin="mb-5" 
                                     name="origin" 
                                     type="text" 
@@ -151,7 +152,7 @@ function EditCat(){
                                 />
 
                                 {/* Foto */}
-                                <Text
+                                <TextEdit
                                     margin="mb-5" 
                                     name="img_url" 
                                     type="text" 

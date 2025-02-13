@@ -2,6 +2,27 @@
 const chalk = require('chalk');
 const log = console.log;
 
+    // Primera importación de datos
+    
+    // const fs = require('fs');
+
+    // const Cats = require('./Models/CatsModel');
+
+    // const importarDB = async () => {
+    //     try {
+    //         const catsData = JSON.parse(fs.readFileSync('./data/cats_data.json', 'utf-8'));
+
+    //         await Cats.deleteMany();
+    //         await Cats.create(catsData);
+
+    //     } catch (error) {
+    //         log(chalk.bgRed('[main.js]: importarDB: ' ,error));
+    //         res.status(500).json({msg: 'OOPS, tenemos un error', data: {}});
+    //     }
+    // };
+
+    // importarDB();
+
 // Express
 const express = require('express');
 const app = express();
@@ -34,8 +55,6 @@ app.use( cors({
     origin: 'http://localhost:5173'
 }))
 
-    // descomentar esto si es para testear en serividor
-// app.use( cors())
 
 // Ruta raiz
 app.get('/apiFinal', (req, res)=>{ 

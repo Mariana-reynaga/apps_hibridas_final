@@ -1,9 +1,9 @@
-import React from 'react';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { React, useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 
 import Text from '../../components/form/InputXadd';
 import Error from '../../components/ErrorNotice';
+import H1 from '../../components/H1Comp';
 
 function Register(){
     const navigate = useNavigate();
@@ -47,12 +47,10 @@ function Register(){
 
     return(
         <div className='flex flex-col items-center'>
-            <div className="w-4/5">
-                <div className="mt-10">
-                    <h1>Registrarte</h1>
-                </div>
+            <div className="w-1/3">
+                <H1>Registro</H1>
 
-                <div className="mt-5">
+                <div className="mt-8 p-4 border rounded-md">
                     <Error>{ registerStatus }</Error>
 
                     <form onSubmit={submit}>
@@ -71,6 +69,10 @@ function Register(){
 
                         <button type='submit' className='mt-5 px-6 py-2 border'>Registrarse</button>
                     </form>
+                </div>
+
+                <div className="mt-8 flex justify-center">
+                    <Link to="/login" className='text-teal-800 font-semibold underline underline-offset-2'>¿Ya tenes una cuenta? Iniciar sesión</Link>
                 </div>
             </div>
         </div>
