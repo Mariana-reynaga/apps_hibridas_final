@@ -42,7 +42,7 @@ function Register(){
         }
 
         navigate(`/login`, { replace: true });
-        location.reload();
+        // location.reload();
     }
 
     return(

@@ -85,7 +85,7 @@ function AddCat (){
         }
     
         navigate(`/cats`, { replace: true });
-        location.reload();
+        // location.reload();
     }
 
     return(

@@ -113,8 +113,8 @@ function EditCat(){
             return
         }
         
-        navigate(`/cats`, { replace: true });
-        location.reload();
+        navigate('/cats', { replace: true });
+        // location.reload();
     }
 
     return(
